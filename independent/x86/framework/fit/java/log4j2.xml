@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出
+monitorInterval : Log4j能够自动检测修改配置文件和重新配置本身, 设置间隔秒数。
+注：本配置文件的目标是将不同级别的日志输出到不同文件，最大2MB一个文件，
+文件数据达到最大值时，旧数据会被压缩并放进指定文件夹
+-->
+<Configuration status="WARN" monitorInterval="10">
+    <Properties>
+        <Property name="CONSOLE_PATTERN">%5p [%t] %d{yyyy-MM-dd HH:mm:ss} (%F:%L) %m%n</Property>
+        <Property name="LOG_HOME">${env:LOG_HOME}</Property>
+        <Property name="LOG_NUM">${env:LOG_NUM:-4320}</Property>
+        <Property name="LOG_SIZE">${env:LOG_SIZE:-50MB}</Property>
+    </Properties>
+    <Appenders>
+        <!--这个输出控制台的配置，这里输出除了warn和error级别的信息到System.out-->
+        <Console name="console_out_appender" target="SYSTEM_OUT">
+            <!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) -->
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 输出日志的格式 -->
+            <PatternLayout>
+                <Pattern>${CONSOLE_PATTERN}</Pattern>
+            </PatternLayout>
+        </Console>
+        <!--这个输出控制台的配置，这里输出warn和error级别的信息到System.err，在eclipse控制台上看到的是红色文字-->
+        <Console name="console_err_appender" target="SYSTEM_ERR">
+            <!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) -->
+            <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 输出日志的格式 -->
+            <PatternLayout pattern="%5p [%t] %d{yyyy-MM-dd HH:mm:ss} (%F:%L) %m%n"/>
+        </Console>
+        <!-- 输出到文件，按没或者超过50MB分割 -->
+        <RollingFile name="framework_appender" fileName="${LOG_HOME}/hisp-${env:HOSTNAME}.log" filePermissions="rw-r-----"
+                     filePattern="${LOG_HOME}/$${date:MM-dd}/hisp-${env:HOSTNAME}-%d{HH}-%i.log.gz">
+            <!-- 需要记录的级别 -->
+            <!-- <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" /> -->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSSXXX}{GMT+8} (%r):%4p%X[%t]%l-->%replace{%m}{[\f\t\r\n\u0008\u000b\u007f]}{}%n" />
+            <Policies>
+                <OnStartupTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="${LOG_SIZE}"/>
+                <CronTriggeringPolicy schedule="0 0 * * * ?"/>
+            </Policies>
+            <DefaultRolloverStrategy max="${LOG_NUM}">
+                <Delete basePath="${LOG_HOME}" maxDepth="2">
+                    <IfAccumulatedFileCount exceeds="${LOG_NUM}"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+            <DynamicThresholdFilter key="mod" defaultThreshold="INFO" onMatch="ACCEPT" onMismatch="DENY">
+            </DynamicThresholdFilter>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- 配置日志的根节点 -->
+        <root level="info">
+            <appender-ref ref="console_out_appender"/>
+            <appender-ref ref="console_err_appender"/>
+            <appender-ref ref="framework_appender"/>
+        </root>
+        <!-- 第三方日志系统 -->
+        <logger name="modelengine.fitframework" level="info"/>
+        <logger name="modelengine.fit" level="info"/>
+    </Loggers>
+</Configuration>

@@ -1,0 +1,43 @@
+ARG BASE
+FROM ${BASE}
+ARG PLAT_FORM
+
+# 使用 ENV 设置环境变量
+ENV PLATFORM=$PLAT_FORM
+
+WORKDIR /app
+COPY python python
+COPY root /var/spool/cron/
+
+
+RUN ln -s /usr/lib64/libpython3.11.so.1.0 /usr/lib64/libpython3.11.so
+
+COPY ./fit_start.sh /app/python/fit_start.sh
+
+RUN yum makecache && \
+    yum install -y shadow-utils logrotate cronie python3-pip && \
+    groupadd -g 1300 -r runtime && \
+    groupadd -g 2000 -r appengine && \
+    useradd -u 1300 -r -g 1300 -G 2000 -M runtime && \
+    cp /etc/cron.daily/logrotate /etc/cron.hourly/ && \
+    chmod 700 /app/python/fit_start.sh && \
+    useradd -u 200 -r -g 2000 -M fit
+
+RUN mkdir -p /home/runtime/ && \
+    chown -R runtime:runtime /home/runtime/ && \
+    chown -R runtime:runtime /app/python/
+
+ENV PATH="/usr/local/bin:$PATH"
+ENV PYTHONPATH="/usr/local/lib/python3.11/site-packages/:$PYTHONPATH"
+WORKDIR /app/python
+RUN pip3 config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && \
+    pip3 config set global.trusted-host mirrors.aliyun.com && \
+    pip3 install -r requirements.txt && \
+    pip3 install -r fel-requirements.txt && \
+    pip3 install pandas==2.1.3 mysql-connector-python pymysql==1.1.0 elasticsearch==7.17.12 cryptography  
+
+USER root
+RUN rm -rf /app/databus_python_sdk
+
+RUN chmod +x fit_start.sh
+ENTRYPOINT ["./fit_start.sh"]

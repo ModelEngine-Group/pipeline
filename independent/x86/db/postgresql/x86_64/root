@@ -1,0 +1,1 @@
+*/10 * * * * /usr/sbin/logrotate -s /opt/etc/logrotate/${HOSTNAME}-logrotate.status /opt/etc/logrotate/${HOSTNAME}-logrotate.conf

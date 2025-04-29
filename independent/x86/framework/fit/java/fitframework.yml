@@ -1,0 +1,50 @@
+application:
+  name: 'application' # 默认应用名
+
+worker:
+  id: 'app-builder' # 默认的进程唯一标识，该配置需要进行覆盖，避免workerId相同注册服务混乱
+  host: 'localhost' # 该配置需要修改为真实启动的本地ip地址
+  environment: 'prod' # 默认环境标
+  environment-sequence: 'prod' # 默认环境调用链
+  exit:
+    graceful: true
+
+matata:
+  registry:
+    host: 'localhost' # 默认连接的注册中心为本地
+    port: 8080 # 默认连接注册中心的端口为本地默认的 8080 端口
+    protocol: 2 # 注册中心默认使用 Http 的传输协议
+    environment: 'prod' # 默认注册中心的环境标和本地默认配置一致
+    available-services: # 将注册中心和获取地址相关的服务进行配置，其他服务都可以通过以下服务进行地址获取
+    # 订阅服务并获取所订阅服务地址的接口
+    - genericable-name: 'modelengine.fit.registry.RegistryService.subscribeFitables'
+      genericable-id: 'c9aa580f3fa845c99c2c6145a0499e45'
+      genericable-version: '1.0.0'
+      fitable-id: 'ee0a8337d3654a22a548d5d5abe1d5f3'
+      fitable-version: '1.0.0'
+      formats:
+      - 1
+    # 直接获取服务地址的接口
+    - genericable-name: 'modelengine.fit.registry.RegistryService.queryFitablesAddresses'
+      genericable-id: '33be4142494e4742aa122555a451d996'
+      genericable-version: '1.0.0'
+      fitable-id: '5807f06a3a704708b264ea3c6cfbbd53'
+      fitable-version: '1.0.0'
+      formats:
+      - 1
+    # 查询注册中心正在运行的服务实现信息的接口
+    - genericable-name: 'modelengine.fit.registry.RegistryService.queryRunningFitables'
+      genericable-id: '7c52fb4fdfa243af928f23607fbbee02'
+      genericable-version: '1.0.0'
+      fitable-id: '33b1f9b8f1cc49d19719a6536c96e854'
+      fitable-version: '1.0.0'
+      formats:
+      - 1
+
+fit:
+  beans:
+    packages:
+    - 'modelengine.fitframework'
+    - 'modelengine.fit'
+
+
