@@ -46,6 +46,13 @@ do
   cp "$i" sql/data
 done
 
+aipp_parallel_tool_data_sql_list=$(find "${WORKSPACE}"/app-platform/app-builder/plugins/aipp-parallel-tool/src/main/resources/sql/data -name "*.sql")
+echo "${aipp_parallel_tool_data_sql_list}"
+for i in ${aipp_parallel_tool_data_sql_list}
+do
+  cp "$i" sql/data
+done
+
 # store相关sql语句
 store_schema_sql_list=$(find "${WORKSPACE}"/app-platform/carver/plugins/tool-repository-postgresql/src/main/resources/sql/schema -name "*.sql")
 echo "${store_schema_sql_list}"
