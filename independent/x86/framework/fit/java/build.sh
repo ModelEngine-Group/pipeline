@@ -28,86 +28,127 @@ mkdir -p ${CURRENT_BUILD_DIR}
 cp -r ${WORKSPACE}/app-platform/examples/smart-form ${CURRENT_BUILD_DIR}/
 
 cd "${WORKSPACE}"
-mkdir -p sql
-# app builder相关sql语句
-appbuilder_sql_list=$(find "${WORKSPACE}"/app-platform/app-builder/jane/jober/sql/jade/ -name "*.sql")
-echo "${appbuilder_sql_list}"
-for i in ${appbuilder_sql_list}
+mkdir -p sql/schema
+mkdir -p sql/data
+
+# app plugin相关sql语句
+app_plugin_schema_sql_list=$(find "${WORKSPACE}"/app-platform/app-builder/jane/plugins/aipp-plugin/src/main/resources/sql/schema -name "*.sql")
+echo "${app_plugin_schema_sql_list}"
+for i in ${app_plugin_schema_sql_list}
 do
-  cp "$i" sql/
+  cp "$i" sql/schema
 done
+
+app_plugin_data_sql_list=$(find "${WORKSPACE}"/app-platform/app-builder/jane/plugins/aipp-plugin/src/main/resources/sql/data -name "*.sql")
+echo "${app_plugin_data_sql_list}"
+for i in ${app_plugin_data_sql_list}
+do
+  cp "$i" sql/data
+done
+
 # store相关sql语句
-store_sql_list=$(find "${WORKSPACE}"/app-platform/carver/plugins/tool-repository-postgresql/src/main/resources/ -name "*.sql")
-echo "${store_sql_list}"
-for i in ${store_sql_list}
+store_schema_sql_list=$(find "${WORKSPACE}"/app-platform/carver/plugins/tool-repository-postgresql/src/main/resources/sql/schema -name "*.sql")
+echo "${store_schema_sql_list}"
+for i in ${store_schema_sql_list}
 do
-  cp "$i" sql/
+  cp "$i" sql/schema
 done
 
-store_sql_list_task=$(find "${WORKSPACE}"/app-platform/store/plugins/store-repository-postgresql/src/main/resources/ -name "*.sql")
-echo "${store_sql_list_task}"
-for i in ${store_sql_list_task}
+store_schema_sql_list_task=$(find "${WORKSPACE}"/app-platform/store/plugins/store-repository-postgresql/src/main/resources/sql/schema -name "*.sql")
+echo "${store_schema_sql_list_task}"
+for i in ${store_schema_sql_list_task}
 do
-  cp "$i" sql/
+  cp "$i" sql/schema
 done
 
-store_sql_init=$(find "${CURRENT_WORKSPACE}"/${PACKAGE_TYPE} -name "*.sql")
-echo "${store_sql_init}"
-for i in ${store_sql_init}
+store_data_sql_list_task=$(find "${WORKSPACE}"/app-platform/store/plugins/store-repository-postgresql/src/main/resources/sql/data -name "*.sql")
+echo "${store_data_sql_list_task}"
+for i in ${store_data_sql_list_task}
 do
-  cp "$i" sql/
+  cp "$i" sql/data
 done
 
 # app-engine-announcement 相关sql 脚本
-app_announcement_sql_list=$(find "${WORKSPACE}"/app-platform/app-engine/plugins/app-announcement/src/main/resources/sql/ -name "*.sql")
-echo "${app_announcement_sql_list}"
-for i in ${app_announcement_sql_list}
+app_announcement_schema_sql_list=$(find "${WORKSPACE}"/app-platform/app-engine/plugins/app-announcement/src/main/resources/sql/schema -name "*.sql")
+echo "${app_announcement_schema_sql_list}"
+for i in ${app_announcement_schema_sql_list}
 do
-  cp "$i" sql/
+  cp "$i" sql/schema
 done
 
 # app-engine-metrics 相关sql 脚本
-app_metrics_sql_list=$(find "${WORKSPACE}"/app-platform/app-engine/plugins/app-metrics/src/main/resources/sql/ -name "*.sql")
-echo "${app_metrics_sql_list}"
-for i in ${app_metrics_sql_list}
+app_metrics_schema_sql_list=$(find "${WORKSPACE}"/app-platform/app-engine/plugins/app-metrics/src/main/resources/sql/schema -name "*.sql")
+echo "${app_metrics_schema_sql_list}"
+for i in ${app_metrics_schema_sql_list}
 do
-  cp "$i" sql/
+  cp "$i" sql/schema
 done
 
-# app-eval 相关sql 脚本
-eval_dataset_sql_list=$(find "${WORKSPACE}"/app-platform/app-eval/plugins/eval-dataset/src/main/resources/sql/ -name "*.sql")
-echo "${eval_dataset_sql_list}"
-for i in ${eval_dataset_sql_list}
+app_base_schema_sql_list=$(find "${WORKSPACE}"/app-platform/app-engine/plugins/app-base/src/main/resources/sql/schema -name "*.sql")
+echo "${app_base_schema_sql_list}"
+for i in ${app_base_schema_sql_list}
 do
-  cp "$i" sql/
+  cp "$i" sql/schema
 done
 
-eval_task_sql_list=$(find "${WORKSPACE}"/app-platform/app-eval/plugins/eval-task/src/main/resources/sql/ -name "*.sql")
-echo "${eval_task_sql_list}"
-for i in ${eval_task_sql_list}
+# app-eval 相关 sql 脚本
+eval_dataset_schema_sql_list=$(find "${WORKSPACE}"/app-platform/app-eval/plugins/eval-dataset/src/main/resources/sql/schema -name "*.sql")
+echo "${eval_dataset_schema_sql_list}"
+for i in ${eval_dataset_schema_sql_list}
 do
-  cp "$i" sql/
+  cp "$i" sql/schema
 done
 
-app_worker_sql_list=$(find "${WORKSPACE}"/app-platform/app-eval/plugins/simple-uid-generator/src/main/resources/sql/ -name "*.sql")
-echo "${app_worker_sql_list}"
-for i in ${app_worker_sql_list}
+eval_task_schema_sql_list=$(find "${WORKSPACE}"/app-platform/app-eval/plugins/eval-task/src/main/resources/sql/schema -name "*.sql")
+echo "${eval_task_schema_sql_list}"
+for i in ${eval_task_schema_sql_list}
 do
-  cp "$i" sql/
+  cp "$i" sql/schema
 done
 
-app_model_center_sql_list=$(find "${WORKSPACE}"/app-platform/app-builder/plugins/aipp-custom-model-center/src/main/resources/sql/ -name "*.sql")
-echo "${app_model_center_sql_list}"
-for i in ${app_model_center_sql_list}
+app_worker_schema_sql_list=$(find "${WORKSPACE}"/app-platform/app-eval/plugins/simple-uid-generator/src/main/resources/sql/schema -name "*.sql")
+echo "${app_worker_schema_sql_list}"
+for i in ${app_worker_schema_sql_list}
 do
-  cp "$i" sql/
+  cp "$i" sql/schema
 done
 
-app_knowledge_sql_list=$(find "${WORKSPACE}"/app-platform/app-knowledge/plugins/knowledge-manager/src/main/resources/sql/ -name "*.sql")
-echo "${app_knowledge_sql_list}"
-for i in ${app_knowledge_sql_list}
+# 自定义模型相关 sql 脚本
+app_model_center_schema_sql_list=$(find "${WORKSPACE}"/app-platform/app-builder/plugins/aipp-custom-model-center/src/main/resources/sql/schema -name "*.sql")
+echo "${app_model_center_schema_sql_list}"
+for i in ${app_model_center_schema_sql_list}
 do
-  cp "$i" sql/
+  cp "$i" sql/schema
+done
+
+app_model_center_data_sql_list=$(find "${WORKSPACE}"/app-platform/app-builder/plugins/aipp-custom-model-center/src/main/resources/sql/data -name "*.sql")
+echo "${app_model_center_data_sql_list}"
+for i in ${app_model_center_data_sql_list}
+do
+  cp "$i" sql/data
+done
+
+# 自定义知识库相关 sql 脚本
+app_knowledge_schema_sql_list=$(find "${WORKSPACE}"/app-platform/app-knowledge/plugins/knowledge-manager/src/main/resources/sql/schema -name "*.sql")
+echo "${app_knowledge_schema_sql_list}"
+for i in ${app_knowledge_schema_sql_list}
+do
+  cp "$i" sql/schema
+done
+
+app_knowledge_data_sql_list=$(find "${WORKSPACE}"/app-platform/app-knowledge/plugins/knowledge-manager/src/main/resources/sql/data -name "*.sql")
+echo "${app_knowledge_data_sql_list}"
+for i in ${app_knowledge_data_sql_list}
+do
+  cp "$i" sql/data
+done
+
+# wenjie 相关 sql 脚本
+app_wenjie_data_sql_list=$(find "${WORKSPACE}"/app-platform/app-builder/plugins/plugins-show-case-parent/aito-data/src/main/resources/sql/data -name "*.sql")
+echo "${app_wenjie_data_sql_list}"
+for i in ${app_wenjie_data_sql_list}
+do
+  cp "$i" sql/data
 done
 
 cd "${CURRENT_BUILD_DIR}"
