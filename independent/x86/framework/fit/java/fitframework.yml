@@ -46,9 +46,3 @@ fit:
     packages:
     - 'modelengine.fitframework'
     - 'modelengine.fit'
-
-knowledge:
-  support-list:
-    - groupId: qianfanKnowledge
-      name: 百度千帆知识库
-      description: 百度千帆知识库
