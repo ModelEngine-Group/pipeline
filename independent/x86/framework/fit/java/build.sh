@@ -33,6 +33,7 @@ chmod -R 755 ./
 cd "${WORKSPACE}"
 mkdir -p "${WORKSPACE}"/package/sql
 mv -f ${WORKSPACE}/app-platform/sql/* "${WORKSPACE}"/package/sql/
+mv -f ${CURRENT_WORKSPACE}/upgrade.sql "${WORKSPACE}"/package/sql/
 
 cd "${CURRENT_BUILD_DIR}"
 mkdir -p icon

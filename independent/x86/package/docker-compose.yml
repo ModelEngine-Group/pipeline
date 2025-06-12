@@ -40,7 +40,7 @@ services:
       " chmod +x /home/initDB.sh
         ls -l /home/  # 检查文件是否存在
         cat /home/initDB.sh  # 检查脚本内容
-        bash /home/initDB.sh app_builder /home/sql
+        bash /home/initDB.sh app_builder /home/sql ${IS_UPGRADE}
       "
     restart: "no"
 
