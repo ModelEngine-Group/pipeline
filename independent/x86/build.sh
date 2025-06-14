@@ -43,4 +43,6 @@ echo "=== Building db... ==="
 bash db/postgresql/x86_64/build.sh ${IMAGE_VERSION}
 echo "=== Finished db ==="
 
+sed -i "s/<VERSION>/${IMAGE_VERSION}/g" ${WORKSPACE}/package/docker-compose.yml
+
 bash deploy.sh

@@ -45,7 +45,7 @@ if not exist "appengine\log" (
 )
 
 echo Starting service
-docker-compose build --build-arg IS_UPGRADE=1
+set IS_UPGRADE=true
 docker-compose up -d
 echo Service started
 

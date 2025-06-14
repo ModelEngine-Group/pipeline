@@ -31,9 +31,10 @@ cd "${WORKSPACE}/app-platform/shell"
 chmod -R 755 ./
 ./sql_build.sh
 cd "${WORKSPACE}"
-mkdir -p "${WORKSPACE}"/package/sql
-mv -f ${WORKSPACE}/app-platform/sql/* "${WORKSPACE}"/package/sql/
-mv -f ${CURRENT_WORKSPACE}/upgrade.sql "${WORKSPACE}"/package/sql/
+mkdir -p "${WORKSPACE}"/package/sql/init
+mkdir -p "${WORKSPACE}"/package/sql/upgrade
+mv -f ${WORKSPACE}/app-platform/sql/* "${WORKSPACE}"/package/sql/init/
+mv -f ${CURRENT_WORKSPACE}/upgrade.sql "${WORKSPACE}"/package/sql/upgrade/
 
 cd "${CURRENT_BUILD_DIR}"
 mkdir -p icon

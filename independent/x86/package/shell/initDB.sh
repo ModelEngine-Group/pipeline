@@ -4,10 +4,9 @@ export PGPASSWORD="$POSTGRES_PASSWORD"
 
 DB_NAME=$1
 SQL_DIR=$2
-SCHEMA_SQL_DIR="$SQL_DIR/schema"
-DATA_SQL_DIR="$SQL_DIR/data"
-IS_UPGRADE=$3
-UPGRADE_SQL_FILE="$SQL_DIR/upgrade.sql"
+SCHEMA_SQL_DIR="$SQL_DIR/init/schema"
+DATA_SQL_DIR="$SQL_DIR/init/data"
+UPGRADE_SQL_DIR="$SQL_DIR/upgrade"
 
 # 尝试连接数据库
 while true
@@ -28,14 +27,21 @@ do
 done
 echo "----------------"
 
-if [ "$IS_UPGRADE" = "1" ]; then
+if [ "$IS_UPGRADE" = "true" ]; then
     echo "Executing upgrade.sql..."
     # 执行升级脚本
-    psql -h ${DB_HOST} -p ${DB_PORT} -U ${DB_USER} -d ${DB_NAME} -f ${UPGRADE_SQL_FILE} -v ON_ERROR_STOP=1
-    if [ "$?" -ne 0 ]; then
-        echo "Error: executing $UPGRADE_SQL_FILE failed"
-        exit 1
+    if [ ! -z "${UPGRADE_SQL_DIR}" ]; then
+        files=$(ls ${UPGRADE_SQL_DIR}/*.sql | sort)
+        for sql_file in $files;do
+            echo "Executing $sql_file..."
+            psql -h ${DB_HOST} -p ${DB_PORT} -U ${DB_USER} -d ${DB_NAME} -f ${sql_file} -v ON_ERROR_STOP=1
+            if [ "$?" -ne 0 ]; then
+                echo "Error: executing $sql_file failed"
+                exit 1
+            fi
+        done
     fi
+    echo "Finished executing upgrade.sql "
 fi
 echo "----------------"
 
