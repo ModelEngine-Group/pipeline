@@ -43,11 +43,14 @@ WHERE "id" = 'df3c7df760964d08b092f7c9d0eb9513';
 
 -- 多版本功能
 -- ## app_suite_id
+ALTER TABLE app_builder_app ADD app_suite_id VARCHAR(32) NULL;
 UPDATE app_builder_app
 SET app_suite_id = task_new.template_id from task_new
 where task_new.attributes->>'app_id' = app_builder_app.id and app_builder_app.is_deleted = 0;
 
 -- ## is_active
+ALTER TABLE app_builder_app
+    ADD is_active bool NULL DEFAULT false;
 UPDATE app_builder_app
 SET is_active =
         CASE
@@ -59,6 +62,8 @@ SET is_active =
 WHERE 1 = 1;
 
 -- ## status
+ALTER TABLE app_builder_app
+    ADD status varchar(16) NULL;
 UPDATE app_builder_app
 SET status =
         CASE
@@ -70,12 +75,16 @@ SET status =
 WHERE 1 = 1;
 
 -- ## uniqueName
+ALTER TABLE app_builder_app
+    ADD unique_name varchar(64) NULL;
 UPDATE app_builder_app
 SET unique_name = task_new.attributes->>'unique_name'
 FROM task_new
 WHERE app_builder_app.app_suite_id = task_new.template_id and app_builder_app.id = task_new.attributes->>'app_id' and app_builder_app.state = 'active' and task_new.version = app_builder_app.version;
 
 -- ## publishAt
+ALTER TABLE app_builder_app
+    ADD publish_at timestamp(6) NULL;
 UPDATE app_builder_app
 SET publish_at = to_timestamp(task_new.attributes->>'publish_at', 'YYYY-MM-DD"T"HH24:MI:SS')
     FROM task_new
@@ -93,6 +102,8 @@ SET attributes = jsonb_set(app_builder_app.attributes::JSONB, '{publish_update_l
 WHERE app_builder_app.app_suite_id = task_new.template_id and app_builder_app.id = task_new.attributes->>'app_id';
 
 -- ## app_id
+ALTER TABLE app_builder_app
+    ADD app_id varchar(64) NULL;
 UPDATE app_builder_app
 SET app_id = id
 WHERE 1 = 1;

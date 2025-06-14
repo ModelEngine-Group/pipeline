@@ -1,20 +1,13 @@
 @echo off
+set "IMAGE_DIR=.\images"
+
 echo === Deploying... ===
 
-echo Loading app-builder
-docker load -i app-builder-opensource-1.0.0.tar
-
-echo Loading runtime-java
-docker load -i fit-runtime-java-opensource-1.0.0.tar
-
-echo Loading runtime-python
-docker load -i fit-runtime-python-opensource-1.0.0.tar
-
-echo Loading web
-docker load -i jade-web-opensource-1.0.0.tar
-
-echo Loading jade-db
-docker load -i postgres.x86_64-15.2.tar
+for %%i in ("%IMAGE_DIR%\*.tar") do (
+    echo Loading %%~nxi
+    docker load -i "%%i"
+    echo.
+)
 
 if not exist "appengine\app-builder" (
     mkdir appengine\app-builder
