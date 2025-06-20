@@ -40,6 +40,14 @@ cd "${CURRENT_BUILD_DIR}"
 mkdir -p icon
 rm -rf icon/*
 appbuilder_icon_list=$(find "${CURRENT_WORKSPACE}/${PACKAGE_TYPE}"/icon -name "*.png")
+appbuilder_template_icon_list=$(find "${WORKSPACE}/app-platform/app-builder/jane/plugins/aipp-plugin/src/main/resources/icon" -name "*.png")
+
+echo "${appbuilder_template_icon_list}"
+for template_icon in ${appbuilder_template_icon_list}
+do
+    cp "${template_icon}" icon/
+done
+
 echo "${appbuilder_icon_list}"
 for i in ${appbuilder_icon_list}
 do
