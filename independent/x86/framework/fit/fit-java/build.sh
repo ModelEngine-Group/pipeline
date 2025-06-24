@@ -66,6 +66,14 @@ rm -f ./fit-fitframework/plugins/fit-dynamic-plugin-mvn*
 rm -f ./fit-fitframework/plugins/fit-http-openapi3*
 rm -f ./fit-fitframework/plugins/fit-service-coordination-simple*
 
+rm -f ./fit-fitframework/plugins/fel-langchain-runnable*
+rm -f ./fit-fitframework/plugins/fel-model-openai-plugin*
+rm -f ./fit-fitframework/plugins/fel-tokenizer-hanlp-plugin*
+rm -f ./fit-fitframework/plugins/fel-tool-discoverer*
+rm -f ./fit-fitframework/plugins/fel-tool-executor*
+rm -f ./fit-fitframework/plugins/fel-tool-factory-repository*
+rm -f ./fit-fitframework/plugins/fel-tool-repository-simple*
+
 dos2unix ${packageDir}/fit-fitframework/bin/fit
 
 # 打包镜像

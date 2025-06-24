@@ -80,6 +80,11 @@ if [ -z "$(ls -A "${packageDir}")" ]; then
 fi
 
 # 删除多余插件
+rm -f ${WORKSPACE}/fit-framework/build/plugins/fel-tool-discoverer*
+rm -f ${WORKSPACE}/fit-framework/build/plugins/fel-tool-executor*
+rm -f ${WORKSPACE}/fit-framework/build/plugins/fel-tool-factory-repository*
+rm -f ${WORKSPACE}/fit-framework/build/plugins/fel-tool-repository-simple*
+
 ls "${WORKSPACE}/fit-framework/build/plugins"
 mkdir -p ${packageDir}/fit
 cp -r "${WORKSPACE}/fit-framework/build"/* "${packageDir}/fit/"
