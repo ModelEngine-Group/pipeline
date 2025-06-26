@@ -69,7 +69,7 @@ services:
       fit.datasource.instances.app-engine.url: jdbc:postgresql://jade-db/app_builder?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=true&allowPublicKeyRetrieval=true&useAffectedRows=true&connectTimeout=60000&socketTimeout=60000
       fit.datasource.instances.app-engine.username: postgres
       fit.datasource.instances.app-engine.password: "ModelEngine@123"
-      openai-urls.internal: https://model-lite-router:8009
+      openai-urls.internal: https://model-lite-router:8009/v1
       app-engine.pathPrefix: /api/jober
       LOG_HOME: /log/app
       LOG_NUM: 4320
