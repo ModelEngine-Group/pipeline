@@ -39,12 +39,6 @@ mv -f ${CURRENT_WORKSPACE}/upgrade.sql "${WORKSPACE}"/package/sql/upgrade/
 cd "${CURRENT_BUILD_DIR}"
 mkdir -p icon
 rm -rf icon/*
-appbuilder_icon_list=$(find "${CURRENT_WORKSPACE}/${PACKAGE_TYPE}"/icon -name "*.png")
-echo "${appbuilder_icon_list}"
-for i in ${appbuilder_icon_list}
-do
-  cp "$i" icon/
-done
 
 # 拷贝应用头像
 cd "${WORKSPACE}/app-platform/shell"
@@ -101,7 +95,7 @@ cp "${CURRENT_WORKSPACE}"/Dockerfile "${packageDir}"
 cp "${CURRENT_WORKSPACE}"/log_collect.sh "${packageDir}"
 
 mkdir -p "${packageDir}/icon"
-cp "${CURRENT_WORKSPACE}/internal/icon"/* "${packageDir}/icon"
+mv "${CURRENT_BUILD_DIR}/icon"/* "${packageDir}/icon"
 
 mkdir -p ${packageDir}/smart-form
 cp -r ${CURRENT_BUILD_DIR}/smart-form ${packageDir}
@@ -115,7 +109,7 @@ tar -zxvf ${PUBLIC_DIR}/openlogic*.tar.gz -C ${packageDir}/java --strip-componen
 echo "build the backend image by base image"
 
 mkdir -p "${packageDir}/form"
-cp ${CURRENT_WORKSPACE}/opensource/template.zip ${packageDir}/form/
+cp ${CURRENT_WORKSPACE}/template.zip ${packageDir}/form/
 
 dos2unix ${packageDir}/fit/bin/fit
 
