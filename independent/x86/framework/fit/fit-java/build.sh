@@ -1,6 +1,7 @@
 #！/bin/bash
 set -exu
 
+source "${WORKSPACE}"/env.sh
 SKIP_TESTS=true
 
 # 获取服务路径
@@ -74,7 +75,9 @@ rm -f ./fit-fitframework/plugins/fel-tool-executor*
 rm -f ./fit-fitframework/plugins/fel-tool-factory-repository*
 rm -f ./fit-fitframework/plugins/fel-tool-repository-simple*
 
-dos2unix ${packageDir}/fit-fitframework/bin/fit
+if [[ "${OS_TYPE}" != "Darwin" ]]; then
+  dos2unix ${packageDir}/fit-fitframework/bin/fit
+fi
 
 # 打包镜像
 docker build -f ${packageDir}/Dockerfile --build-arg BASE=${base_image} --build-arg PLAT_FORM=${ENV_TYPE} -t ${image_name}:${VERSION} .

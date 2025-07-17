@@ -2,6 +2,7 @@
 set -eux
 
 export WORKSPACE=$(cd "$(dirname "$(readlink -f "$0")")" && pwd)
+source "${WORKSPACE}/env.sh"
 
 FIT_JAVA_BRANCH=${1:-"3.5.x"}
 APP_PLATFORM_BRANCH=${2:-"develop"}
@@ -43,6 +44,7 @@ echo "=== Building db... ==="
 bash db/postgresql/x86_64/build.sh ${IMAGE_VERSION}
 echo "=== Finished db ==="
 
-sed -i "s/<VERSION>/${IMAGE_VERSION}/g" ${WORKSPACE}/package/docker-compose.yml
+cp -rf ${WORKSPACE}/pack/* ${WORKSPACE}/package/
+${SED} "s/<VERSION>/${IMAGE_VERSION}/g" ${WORKSPACE}/package/docker-compose.yml
 
 bash deploy.sh
