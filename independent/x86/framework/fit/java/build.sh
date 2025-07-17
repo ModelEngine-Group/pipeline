@@ -1,5 +1,7 @@
 #！/bin/bash
 set -exu
+
+source "${WORKSPACE}"/env.sh
 echo ${WORKSPACE}
 SKIP_TESTS=true
 
@@ -34,7 +36,7 @@ cd "${WORKSPACE}"
 mkdir -p "${WORKSPACE}"/package/sql/init
 mkdir -p "${WORKSPACE}"/package/sql/upgrade
 mv -f ${WORKSPACE}/app-platform/sql/* "${WORKSPACE}"/package/sql/init/
-mv -f ${CURRENT_WORKSPACE}/upgrade.sql "${WORKSPACE}"/package/sql/upgrade/
+cp -f ${CURRENT_WORKSPACE}/upgrade.sql "${WORKSPACE}"/package/sql/upgrade/
 
 cd "${CURRENT_BUILD_DIR}"
 mkdir -p icon
@@ -111,7 +113,9 @@ echo "build the backend image by base image"
 mkdir -p "${packageDir}/form"
 cp ${CURRENT_WORKSPACE}/template.zip ${packageDir}/form/
 
-dos2unix ${packageDir}/fit/bin/fit
+if [[ "${OS_TYPE}" != "Darwin" ]]; then
+  dos2unix ${packageDir}/fit/bin/fit
+fi
 
 # Step5 出镜像
 docker build --build-arg PLAT_FORM=${ENV_TYPE} --build-arg BASE=${base_image} -t ${image_name}:${VERSION} --file=${packageDir}/Dockerfile ${packageDir}/

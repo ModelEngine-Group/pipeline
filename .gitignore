@@ -1,3 +1,11 @@
 # 默认忽略的文件
 .idea
-target
+.DS_Store
+target/
+build/
+app-platform/
+fit-framework/
+elsa/
+package/
+output/
+public/
