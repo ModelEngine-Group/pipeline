@@ -1,5 +1,12 @@
 #!/bin/bash
 set -eux
 
+source "${WORKSPACE}/env.sh"
+
 cd "${WORKSPACE}/app-platform/app-engine/frontend"
-sed -i 's#fit-framework#elsa#g' package.json
+${SED} 's#fit-framework#elsa#g' package.json
+
+if [[ "${OS_TYPE}" == "Darwin" ]]; then
+  cd "${WORKSPACE}/elsa/framework/elsa/fit-elsa"
+  ${SED} "s#sed -i #sed -i '' #g" package.json
+fi
