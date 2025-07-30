@@ -23,6 +23,7 @@ mkdir -p ${WORKSPACE}/framework/fit/java/build
 CURRENT_WORKSPACE=${WORKSPACE}/framework/fit/java
 CURRENT_BUILD_DIR=${CURRENT_WORKSPACE}/build
 PUBLIC_DIR=${WORKSPACE}/public
+SMART_FORM_DIR=${WORKSPACE}/app-platform/app-builder/builtin/form
 
 mkdir -p ${CURRENT_BUILD_DIR}
 
@@ -102,6 +103,29 @@ mv "${CURRENT_BUILD_DIR}/icon"/* "${packageDir}/icon"
 mkdir -p ${packageDir}/smart-form
 cp -r ${CURRENT_BUILD_DIR}/smart-form ${packageDir}
 cp -r ${WORKSPACE}/app-platform/examples/app-demo/normal-form/* ${packageDir}/smart-form/
+
+find "${SMART_FORM_DIR}" -mindepth 1 -maxdepth 1 -type d | while read -r dir; do
+  echo "正在处理目录: $dir"
+  cd "$dir" || continue
+
+  npm install --force
+
+  if [ $? -ne 0 ]; then
+    continue
+  fi
+
+  npm run build
+
+  if [ $? -ne 0 ]; then
+    continue
+  fi
+
+  if [ -d "output" ]; then
+    cp -rf output/* "$packageDir/smart-form/"
+  fi
+done
+
+cd "${packageDir}" || exit
 
 cp "${CURRENT_WORKSPACE}/start.sh" "${packageDir}/fit/bin/"
 chmod 700 "${packageDir}"/fit/bin/*.sh
