@@ -3,7 +3,7 @@ set -eux
 
 source "${WORKSPACE}/env.sh"
 
-cd "${WORKSPACE}/app-platform/app-engine/frontend"
+cd "${WORKSPACE}/app-platform/frontend"
 ${SED} 's#fit-framework#elsa#g' package.json
 
 if [[ "${OS_TYPE}" == "Darwin" ]]; then
