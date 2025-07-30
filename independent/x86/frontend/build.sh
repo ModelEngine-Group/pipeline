@@ -5,7 +5,7 @@ npm -v
 
 elsa_core_dir=${WORKSPACE}/elsa/framework/elsa/fit-elsa
 elsa_react_dir=${WORKSPACE}/elsa/framework/elsa/fit-elsa-react
-appdir=${WORKSPACE}/app-platform/app-engine
+appdir=${WORKSPACE}/app-platform
 workdir=${WORKSPACE}/frontend
 CURRENT_BUILD_DIR=${workdir}/build
 mkdir -p ${CURRENT_BUILD_DIR}
