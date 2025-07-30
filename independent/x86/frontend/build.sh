@@ -44,6 +44,10 @@ npm link
 cd ${appdir}/frontend
 npm install --legacy-peer-deps --force --registry=https://registry.npmmirror.com
 
+cp -r ${elsa_core_dir}/i18n ${appdir}/frontend/node_modules/@fit-elsa/elsa-core/
+mkdir -p ${appdir}/frontend/node_modules/@fit-elsa/elsa-react/src
+cp -r ${elsa_react_dir}/src/i18n ${appdir}/frontend/node_modules/@fit-elsa/elsa-react/src/
+
 # 打包静态资源
 npm run build:$tag
 
