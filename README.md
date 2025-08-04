@@ -71,9 +71,9 @@ TODO
      - 最后一行添加nameserver 8.8.8.8
 3. WSL 编译问题：
    - **Q:** 编译前端报错找不到 i18n 目录
-   - **A:** 部分 WSL 环境 npm link 命令未生效。修改 independent/x86/frontend/build.sh 第 46 行新增：
+   - **A:** npm 9.x.x 版本 npm link 命令未生效。修改 independent/x86/frontend/build.sh 第 46 行新增以下命令，同时删除第 41 行 npm link。
     ```shell
     cp -r ${elsa_core_dir}/i18n ${WORKSPACE}/app-platform/app-engine/frontend/node_modules/\@fit-elsa/elsa-core/
     cp -r ${elsa_react_dir}/src ${WORKSPACE}/app-platform/app-engine/frontend/node_modules/\@fit-elsa/elsa-react/
     ```
-    同时删除第 41 行 npm link。
+    或者升级 npm 版本到 10.x.x。
