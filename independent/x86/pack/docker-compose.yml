@@ -3,6 +3,12 @@ services:
     container_name: jade-db
     hostname: jade-db
     image: postgres:15.2-<VERSION>
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
     networks:
       my-net:
         ipv4_address: 172.0.0.98
@@ -48,7 +54,8 @@ services:
     hostname: app-builder
     image: app-builder:<VERSION>
     depends_on:
-      - jade-db
+      jade-db:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://app-builder:8004/fit/check"]
       interval: 30s
