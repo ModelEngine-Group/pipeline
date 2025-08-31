@@ -47,4 +47,4 @@ echo "=== Finished db ==="
 cp -rf ${WORKSPACE}/pack/* ${WORKSPACE}/package/
 ${SED} "s/<VERSION>/${IMAGE_VERSION}/g" ${WORKSPACE}/package/docker-compose.yml
 
-bash deploy.sh
+bash deploy.sh ${IMAGE_VERSION}
