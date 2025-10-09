@@ -13,16 +13,13 @@ ENV APP_PATH /opt/fit-framework
 COPY log_collect.sh /log_collect.sh
 RUN chmod 550 /log_collect.sh
 
-RUN mkdir -p /usr/local/java
-COPY java /usr/local/java
-ENV JAVA_HOME=/usr/local/java
-ENV PATH=/usr/local/java/bin:${PATH}
-RUN chmod -R +x /usr/local/java/bin
-
 #镜像仓里的
 RUN mkdir -p /opt
 RUN mkdir -p $APP_PATH
 COPY fit $APP_PATH
+
+RUN yum makecache && \
+    yum install -y java-17-openjdk
 
 RUN mkdir -p /opt/fit-framework/data/share
 RUN mkdir -p /var/temporary/tools
@@ -42,8 +39,10 @@ RUN chmod -R a+x $APP_PATH
 RUN mkdir -p /opt/appbuilder/form
 COPY form/template.zip /opt/appbuilder/form
 
-
 RUN mkdir -p /opt/fit-framework/data/smart-form
 COPY smart-form/ /opt/fit-framework/data/smart-form
+
+RUN mkdir -p /opt/sql
+COPY sql/ /opt/sql
 
 ENTRYPOINT ["/opt/fit-framework/bin/start.sh"]

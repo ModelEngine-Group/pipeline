@@ -31,9 +31,6 @@ cd "${packageDir}" || exit
 cp ${CURRENT_WORKSPACE}/Dockerfile "${packageDir}"
 cp ${CURRENT_WORKSPACE}/secure_start.sh "${packageDir}"
 
-mkdir -p ${packageDir}/java
-tar -zxvf ${PUBLIC_DIR}/openlogic*.tar.gz -C ${packageDir}/java --strip-components=1
-
 # 定义条件命令
 SKIP_TESTS_CMD=""
 if [ "$SKIP_TESTS" = "true" ]; then
@@ -75,10 +72,5 @@ rm -f ./fit-fitframework/plugins/fel-tool-executor*
 rm -f ./fit-fitframework/plugins/fel-tool-factory-repository*
 rm -f ./fit-fitframework/plugins/fel-tool-repository-simple*
 
-if [[ "${OS_TYPE}" != "Darwin" ]]; then
-  dos2unix ${packageDir}/fit-fitframework/bin/fit
-fi
-
 # 打包镜像
 docker build -f ${packageDir}/Dockerfile --build-arg BASE=${base_image} --build-arg PLAT_FORM=${ENV_TYPE} -t ${image_name}:${VERSION} .
-docker save -o "${WORKSPACE}/output/${image_name}-${VERSION}.tar" ${image_name}:${VERSION}

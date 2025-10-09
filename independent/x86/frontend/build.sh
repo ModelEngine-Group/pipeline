@@ -57,4 +57,3 @@ cp -r build/* $workdir/output/
 cd $workdir
 
 docker build --build-arg BASE=${base_image} --build-arg PLAT_FORM=${ENV_TYPE} -t jade-web:${VERSION} .
-docker save -o ${WORKSPACE}/output/jade-web-${VERSION}.tar jade-web:${VERSION}

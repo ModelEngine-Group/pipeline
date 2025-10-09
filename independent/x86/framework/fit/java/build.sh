@@ -81,6 +81,9 @@ if [ -z "$(ls -A "${packageDir}")" ]; then
   rm -rf "${packageDir:?}"/*
 fi
 
+# 拷贝 sql
+cp -r "${WORKSPACE}"/package/sql ${packageDir}/
+
 # 删除多余插件
 rm -f ${WORKSPACE}/fit-framework/build/plugins/fel-tool-discoverer*
 rm -f ${WORKSPACE}/fit-framework/build/plugins/fel-tool-executor*
@@ -130,17 +133,10 @@ cd "${packageDir}" || exit
 cp "${CURRENT_WORKSPACE}/start.sh" "${packageDir}/fit/bin/"
 chmod 700 "${packageDir}"/fit/bin/*.sh
 
-mkdir -p ${packageDir}/java
-tar -zxvf ${PUBLIC_DIR}/openlogic*.tar.gz -C ${packageDir}/java --strip-components=1
 echo "build the backend image by base image"
 
 mkdir -p "${packageDir}/form"
 cp ${CURRENT_WORKSPACE}/template.zip ${packageDir}/form/
 
-if [[ "${OS_TYPE}" != "Darwin" ]]; then
-  dos2unix ${packageDir}/fit/bin/fit
-fi
-
 # Step5 出镜像
 docker build --build-arg PLAT_FORM=${ENV_TYPE} --build-arg BASE=${base_image} -t ${image_name}:${VERSION} --file=${packageDir}/Dockerfile ${packageDir}/
-docker save -o "${WORKSPACE}/output/${image_name}-${VERSION}.tar" ${image_name}:${VERSION}

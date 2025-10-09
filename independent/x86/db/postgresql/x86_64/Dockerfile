@@ -17,6 +17,7 @@ RUN yum makecache && \
     make install
 
 COPY root /var/spool/cron/
+COPY initDB.sh /opt/
 
 RUN yum install -y shadow-utils cronie logrotate
 

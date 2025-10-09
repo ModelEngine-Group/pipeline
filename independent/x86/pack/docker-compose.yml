@@ -2,7 +2,7 @@ services:
   jade-db:
     container_name: jade-db
     hostname: jade-db
-    image: ${REPO}/postgres:15.2-<VERSION>
+    image: ${REPO}/postgres:15.2-${VERSION}
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
       interval: 10s
@@ -17,17 +17,39 @@ services:
       POSTGRES_PASSWORD: "ModelEngine@123"
       LOG_HOME: /log/app
     volumes:
-      - ./sql:/home/sql
-      - ./shell/initDB.sh:/home/initDB.sh
       - "./appengine/jade-db:/var/lib/postgresql/data"
       - "./appengine/log:/log/app/postgresql"
     ports:
       - "5432:5432"
 
+  sql-initializer:
+    container_name: sql-initializer
+    hostname: sql-initializer
+    image: ${REPO}/app-builder:${VERSION}
+    networks:
+      my-net:
+        ipv4_address: 172.0.0.97
+    volumes:
+    - ./appengine/sql:/opt/appbuilder/sql
+    entrypoint: ["/bin/bash", "-c"]
+    command: |
+      "
+      rm -rf /opt/appbuilder/sql/*
+      mv -f /opt/sql/* /opt/appbuilder/sql/
+      
+      touch /opt/appbuilder/sql/.initialization_complete
+      echo 'SQL files initialized.'
+      "
+
   db-initializer:
     container_name: db-initializer
     hostname: db-initializer
-    image: ${REPO}/postgres:15.2-<VERSION>
+    image: ${REPO}/postgres:15.2-${VERSION}
+    depends_on:
+      jade-db:
+        condition: service_healthy
+      sql-initializer:
+        condition: service_completed_successfully
     networks:
       my-net:
         ipv4_address: 172.0.0.99
@@ -40,22 +62,22 @@ services:
       DB_USER: postgres
       IS_UPGRADE: ${IS_UPGRADE}
     volumes:
-      - ./shell/initDB.sh:/home/initDB.sh
-      - ./sql:/home/sql
-    entrypoint: ["/bin/bash", "-c"] 
+      - ./appengine/sql:/opt/sql
+    entrypoint: ["/bin/bash", "-c"]
     command: |
-      " chmod +x /home/initDB.sh
-        bash /home/initDB.sh app_builder /home/sql
+      " 
+      chmod +x /opt/initDB.sh
+      bash /opt/initDB.sh app_builder /opt/sql
       "
     restart: "no"
 
   app-builder:
     container_name: app-builder
     hostname: app-builder
-    image: ${REPO}/app-builder:<VERSION>
+    image: ${REPO}/app-builder:${VERSION}
     depends_on:
-      jade-db:
-        condition: service_healthy
+      db-initializer:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD", "curl", "-f", "http://app-builder:8004/fit/check"]
       interval: 30s
@@ -83,6 +105,20 @@ services:
       LOG_SIZE: "50M"
       app-engine.ttl.businessData: 15
       app-engine.ttl.nonBusinessData: 1
+      oauth.client.id: app-platform
+      authorization-server.auth-url: https://modelengine-ai.net/#/login?response_type=code&client_id=app-platform&redirect_uri=https://modelengine.nexent.tech/api/jober/v1/api/auth/callback&scope=read
+      authorization-server.jwks-url: https://modelengine-ai.net/oauth2/jwks
+      oauth.client.secret: RPh2J7SkZQ3r8XoUalNEXsdBIMrj7g3dZ8uUL5q3vVA
+      oauth.client.redirect-uri: https://modelengine.nexent.tech/api/jober/v1/api/auth/callback
+      oauth.auth-url: https://modelengine-ai.net/#/login?response_type=code&client_id=app-platform&redirect_uri=https://modelengine.nexent.tech/api/jober/v1/api/auth/callback&scope=read
+      oauth.home-url: https://modelengine.nexent.tech/#/home
+      oauth.token-endpoint: https://modelengine-ai.net/oauth2/token
+      model.imageExtractor.model: THUDM/GLM-4.1V-9B-Thinking
+      model.imageExtractor.url: https://api.siliconflow.cn/v1
+      model.audioTranscriptions.model: TeleAI/TeleSpeechASR
+      model.audioTranscriptions.url: https://api.siliconflow.cn/v1
+      model.imageExtractor.apiKey: ${APIKEY}
+      model.audioTranscriptions.apiKey: ${APIKEY}
     volumes:
       - "./appengine/fit-runtime:/var/store/tools"
       - "./appengine/log:/log/app/app-builder"
@@ -94,7 +130,7 @@ services:
   fit-runtime-java:
     container_name: fit-runtime-java
     hostname: fit-runtime-java
-    image: ${REPO}/fit-runtime-java:<VERSION>
+    image: ${REPO}/fit-runtime-java:${VERSION}
     depends_on:
       app-builder:
         condition: service_healthy 
@@ -120,7 +156,7 @@ services:
   fit-runtime-python:
     container_name: fit-runtime-python
     hostname: fit-runtime-python
-    image: ${REPO}/fit-runtime-python:<VERSION>
+    image: ${REPO}/fit-runtime-python:${VERSION}
     depends_on:
       app-builder:
         condition: service_healthy 
@@ -136,6 +172,9 @@ services:
       matata.registry.environment: prod
       USER_PLUGINS_PATH: 'custom_dynamic_plugins/python'
       LOG_HOME: /log/app
+      internet-search.api-key.exa: ${EXA_APIKEY}
+      internet-search.api-key.tavily: ${TAVILY_APIKEY}
+      internet-search.api-key.linkup: ${LINKUP_APIKEY}
     volumes:
       - "./appengine/app-builder:/var/share"
       - "./appengine/fit-runtime:/app/python/custom_dynamic_plugins"
@@ -146,7 +185,7 @@ services:
   web:
     container_name: web
     hostname: web
-    image: ${REPO}/jade-web:<VERSION>
+    image: ${REPO}/jade-web:${VERSION}
     depends_on:
       app-builder:
         condition: service_healthy

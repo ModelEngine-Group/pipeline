@@ -26,9 +26,9 @@ mkdir python
 chmod +x python
 cp -r ${WORKSPACE}/fit-framework/framework/fit/python/* python/
 
-cp -r ${WORKSPACE}/fit-framework/framework/fel/python/plugins/builtins/* python/plugin/
-cp ${WORKSPACE}/fit-framework/framework/fel/python/requirements.txt python/fel-requirements.txt
-
+cp -r ${WORKSPACE}/app-platform/app-builder/plugins/fit_py_code_node_tools python/plugin/
+cp -r ${WORKSPACE}/app-platform/app-builder/plugins/fit_py_internet_search python/plugin/
+cp ${WORKSPACE}/app-platform/app-builder/plugins/requirements.txt python/fel-requirements.txt
 
 # 添加动态加载插件目录
 cd python
@@ -41,4 +41,3 @@ cp ${CURRENT_WORKSPACE}/fit_start.sh ${packageDir}
 
 # 打包镜像
 docker build --file=${packageDir}/Dockerfile --build-arg BASE=${base_image} --build-arg PLAT_FORM=${ENV_TYPE} -t ${image_name}:${VERSION} ${packageDir}
-docker save -o "${WORKSPACE}/output/${image_name}-${VERSION}.tar" ${image_name}:${VERSION}

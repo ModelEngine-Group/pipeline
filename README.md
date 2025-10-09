@@ -42,6 +42,14 @@ bash build.sh <fit-framework-java-tag> <app-platform-tag> <fit-framework-elsa-ta
 > 
 > image-version: 自定义镜像版本号
 
+### 本地快速启动验证
+1. 修改 .env 文件的 VERSION 字段为目标版本号，修改 APIKEY 为正确的值。
+2. 执行以下命令启动：
+```shell
+cd independent/x86/pack
+docker-compose up -d
+```
+
 ## Arm 架构
 
 TODO

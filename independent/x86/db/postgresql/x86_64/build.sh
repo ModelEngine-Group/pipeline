@@ -21,9 +21,8 @@ cd ${packageDir}
 cp ${CURRENT_WORKSPACE}/root ${packageDir}
 cp ${CURRENT_WORKSPACE}/Dockerfile ${packageDir}
 cp ${CURRENT_WORKSPACE}/db* ${packageDir}
+cp ${CURRENT_WORKSPACE}/initDB.sh ${packageDir}
 
 echo "ENV_TYPE value is : " "${ENV_TYPE}"
 
 docker build --file=${packageDir}/Dockerfile --build-arg BASE=${base_image} --build-arg PLAT_FORM=${ENV_TYPE} -t postgres:15.2-${VERSION} ${packageDir}
-
-docker save -o ${WORKSPACE}/output/postgres.x86_64-15.2.tar postgres:15.2-${VERSION} # 待使用PLATFORM优化
