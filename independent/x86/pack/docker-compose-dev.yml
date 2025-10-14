@@ -1,0 +1,211 @@
+services:
+  test-jade-db:
+    container_name: test-jade-db
+    hostname: test-jade-db
+    image: ${REPO}/postgres:15.2-${VERSION}
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    networks:
+      my-net:
+        ipv4_address: 10.18.0.98
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "ModelEngine@123"
+      LOG_HOME: /log/app
+    volumes:
+      - "./appengine/jade-db:/var/lib/postgresql/data"
+      - "./appengine/log:/log/app/postgresql"
+    ports:
+      - "5455:5432"
+
+  test-sql-initializer:
+    container_name: test-sql-initializer
+    hostname: test-sql-initializer
+    image: ${REPO}/app-builder:${VERSION}
+    networks:
+      my-net:
+        ipv4_address: 10.18.0.97
+    volumes:
+    - ./appengine/sql:/opt/appbuilder/sql
+    entrypoint: ["/bin/bash", "-c"]
+    command: |
+      "
+      rm -rf /opt/appbuilder/sql/*
+      mv -f /opt/sql/* /opt/appbuilder/sql/
+      
+      touch /opt/appbuilder/sql/.initialization_complete
+      echo 'SQL files initialized.'
+      "
+
+  test-db-initializer:
+    container_name: test-db-initializer
+    hostname: test-db-initializer
+    image: ${REPO}/postgres:15.2-${VERSION}
+    depends_on:
+      test-jade-db:
+        condition: service_healthy
+      test-sql-initializer:
+        condition: service_completed_successfully
+    networks:
+      my-net:
+        ipv4_address: 10.18.0.99
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "ModelEngine@123"
+      LOG_HOME: /log/app
+      DB_HOST: test-jade-db
+      DB_PORT: 5432
+      DB_USER: postgres
+      IS_UPGRADE: ${IS_UPGRADE}
+    volumes:
+      - ./appengine/sql:/opt/sql
+    entrypoint: ["/bin/bash", "-c"]
+    command: |
+      " 
+      chmod +x /opt/initDB.sh
+      bash /opt/initDB.sh app_builder /opt/sql
+      "
+    restart: "no"
+
+  test-app-builder:
+    container_name: test-app-builder
+    hostname: test-app-builder
+    image: ${REPO}/app-builder:${VERSION}
+    depends_on:
+      test-db-initializer:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://test-app-builder:8004/fit/check"]
+      interval: 30s
+      timeout: 10s
+      retries: 20
+      start_period: 180s
+    networks:
+      my-net:
+        ipv4_address: 10.18.0.100
+    environment:
+      worker.host: localhost
+      server.http.port: 8004
+      matata.registry.host: localhost
+      matata.registry.port: 8004
+      fit.profiles.active: prod
+      fit.datasource.primary: app-engine
+      fit.datasource.instances.app-engine.mode: shared
+      fit.datasource.instances.app-engine.url: jdbc:postgresql://test-jade-db/app_builder?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=true&allowPublicKeyRetrieval=true&useAffectedRows=true&connectTimeout=60000&socketTimeout=60000
+      fit.datasource.instances.app-engine.username: postgres
+      fit.datasource.instances.app-engine.password: "ModelEngine@123"
+      openai-urls.internal: https://model-lite-router:8009/v1
+      app-engine.pathPrefix: /api/jober
+      LOG_HOME: /log/app
+      LOG_NUM: 4320
+      LOG_SIZE: "50M"
+      app-engine.ttl.businessData: 15
+      app-engine.ttl.nonBusinessData: 1
+      oauth.client.id: app-platform-exp
+      oauth.client.secret: 4f8d9b2c7e6a4f1d8c3b2a9e7f6d1c0b
+      oauth.client.redirect-uri: https://1.94.149.192:8888/api/jober/v1/api/auth/callback
+      oauth.login-endpoint: https://modelengine-ai.net/#/login
+      oauth.token-endpoint: https://modelengine-ai.net/oauth2/token
+      oauth.auth-endpoint: https://modelengine-ai.net/oauth2/authorize
+      oauth.api-endpoint: https://1.94.149.192:8888/api/jober
+      oauth.state-secret: change_this_to_a_very_long_random_secret_32bytes_min
+      authorization-server.jwk-endpoint: https://modelengine-ai.net/oauth2/jwks
+      authorization-server.api-endpoint: https://1.94.149.192:8888/api/jober
+      model.imageExtractor.model: THUDM/GLM-4.1V-9B-Thinking
+      model.imageExtractor.url: https://api.siliconflow.cn/v1
+      model.audioTranscriptions.model: TeleAI/TeleSpeechASR
+      model.audioTranscriptions.url: https://api.siliconflow.cn/v1
+      model.imageExtractor.apiKey: ${APIKEY}
+      model.audioTranscriptions.apiKey: ${APIKEY}
+    volumes:
+      - "./appengine/fit-runtime:/var/store/tools"
+      - "./appengine/log:/log/app/app-builder"
+      - "./appengine/jade-db:/var/jade-db"
+      - "./appengine/app-builder:/var/share"
+    ports:
+      - "8012:8004"
+
+  test-fit-runtime-java:
+    container_name: test-fit-runtime-java
+    hostname: test-fit-runtime-java
+    image: ${REPO}/fit-runtime-java:${VERSION}
+    depends_on:
+      test-app-builder:
+        condition: service_healthy 
+    networks:
+      my-net:
+        ipv4_address: 10.18.0.101
+    environment:
+      worker.id: test-fit-runtime-java
+      worker.environment: prod
+      worker.host: 10.0.0.101
+      matata.registry.host: test-app-builder
+      matata.registry.port: 8004
+      matata.registry.environment: prod
+      ENTRY_PLUGINS_PATH: /entry
+      LOG_HOME: /log/app
+    volumes:
+      - "./appengine/app-builder:/var/share"
+      - "./appengine/fit-runtime:/entry"
+      - "./appengine/log:/log/app/runtime-java"
+    ports:
+      - "8077:8090"
+ 
+  test-fit-runtime-python:
+    container_name: test-fit-runtime-python
+    hostname: test-fit-runtime-python
+    image: ${REPO}/fit-runtime-python:${VERSION}
+    depends_on:
+      test-app-builder:
+        condition: service_healthy 
+    networks:
+      my-net:
+        ipv4_address: 10.18.0.102
+    environment:
+      WORKER_ID: test-fit-runtime-python
+      WORK_ENV: prod
+      LOCAL_IP: 10.18.0.102
+      REGISTRY_HOST: test-app-builder
+      REGISTRY_PORT: 8004
+      matata.registry.environment: prod
+      USER_PLUGINS_PATH: 'custom_dynamic_plugins/python'
+      LOG_HOME: /log/app
+      internet-search.api-key.exa: ${EXA_APIKEY}
+      internet-search.api-key.tavily: ${TAVILY_APIKEY}
+      internet-search.api-key.linkup: ${LINKUP_APIKEY}
+    volumes:
+      - "./appengine/app-builder:/var/share"
+      - "./appengine/fit-runtime:/app/python/custom_dynamic_plugins"
+      - "./appengine/log:/log/app/runtime-python"
+    ports:
+      - "9667:9666"
+      
+  test-web:
+    container_name: test-web
+    hostname: test-web
+    image: ${REPO}/jade-web:${VERSION}
+    entrypoint: ["/bin/bash","-c","sleep 360000000"]
+    depends_on:
+      test-app-builder:
+        condition: service_healthy
+    networks:
+      my-net:
+        ipv4_address: 10.18.0.103
+    environment:
+      LOG_HOME: /log/app
+    volumes:
+      - "./appengine/log:/log/app/web"
+    ports:
+      - "8033:8001"
+
+networks:
+  my-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.18.0.0/24
+          gateway: 10.18.0.1
