@@ -61,12 +61,14 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       IS_UPGRADE: ${IS_UPGRADE}
+      APIKEY: ${APIKEY}
     volumes:
       - ./appengine/sql:/opt/sql
     entrypoint: ["/bin/bash", "-c"]
     command: |
       " 
       chmod +x /opt/initDB.sh
+      sed -i "s#TODO#${APIKEY}#g" /opt/sql/init/data/tr_init_models.sql
       bash /opt/initDB.sh app_builder /opt/sql
       "
     restart: "no"
