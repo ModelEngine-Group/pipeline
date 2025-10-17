@@ -107,16 +107,14 @@ services:
       LOG_SIZE: "50M"
       app-engine.ttl.businessData: 15
       app-engine.ttl.nonBusinessData: 1
+      filter.oauth2-filter: enable
       oauth.client.id: app-platform-exp
       oauth.client.secret: 4f8d9b2c7e6a4f1d8c3b2a9e7f6d1c0b
       oauth.client.redirect-uri: https://1.94.149.192:8888/api/jober/v1/api/auth/callback
       oauth.login-endpoint: https://modelengine-ai.net/#/login
-      oauth.token-endpoint: https://modelengine-ai.net/oauth2/token
-      oauth.auth-endpoint: https://modelengine-ai.net/oauth2/authorize
+      oauth.oauth-endpoint: https://modelengine-ai.net
       oauth.api-endpoint: https://1.94.149.192:8888/api/jober
       oauth.state-secret: change_this_to_a_very_long_random_secret_32bytes_min
-      authorization-server.jwk-endpoint: https://modelengine-ai.net/oauth2/jwks
-      authorization-server.api-endpoint: https://1.94.149.192:8888/api/jober
       model.imageExtractor.model: THUDM/GLM-4.1V-9B-Thinking
       model.imageExtractor.url: https://api.siliconflow.cn/v1
       model.audioTranscriptions.model: TeleAI/TeleSpeechASR
