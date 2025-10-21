@@ -113,7 +113,7 @@ services:
       oauth.client.redirect-uri: https://1.94.149.192:8888/api/jober/v1/api/auth/callback
       oauth.login-endpoint: https://modelengine-ai.net/#/login
       oauth.oauth-endpoint: https://modelengine-ai.net
-      oauth.api-endpoint: https://1.94.149.192:8888/api/jober
+      oauth.client-api-endpoint: https://1.94.149.192:8888/api/jober
       oauth.state-secret: change_this_to_a_very_long_random_secret_32bytes_min
       model.imageExtractor.model: THUDM/GLM-4.1V-9B-Thinking
       model.imageExtractor.url: https://api.siliconflow.cn/v1
