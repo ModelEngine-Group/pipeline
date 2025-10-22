@@ -106,17 +106,15 @@ services:
       LOG_NUM: 4320
       LOG_SIZE: "50M"
       app-engine.ttl.businessData: 15
-      app-engine.ttl.nonBusinessData: 1
+      app-engine.ttl.nonBusinessData: 3
+      filter.oauth2-filter: enable
       oauth.client.id: app-platform
       oauth.client.secret: RPh2J7SkZQ3r8XoUalNEXsdBIMrj7g3dZ8uUL5q3vVA
       oauth.client.redirect-uri: https://modelengine.nexent.tech/api/jober/v1/api/auth/callback
       oauth.login-endpoint: https://modelengine-ai.net/#/login
-      oauth.token-endpoint: https://modelengine-ai.net/oauth2/token
-      oauth.auth-endpoint: https://modelengine-ai.net/oauth2/authorize
-      oauth.api-endpoint: https://modelengine.nexent.tech/api/jober
+      oauth.oauth-endpoint: https://modelengine-ai.net
+      oauth.client-api-endpoint: https://modelengine.nexent.tech/api/jober
       oauth.state-secret: Zf8yPqkN1tVh9uL4aR3sC7xE2jWm0BzQdG5nT6pH8yJrK9wX
-      authorization-server.jwk-endpoint: https://modelengine-ai.net/oauth2/jwks
-      authorization-server.api-endpoint: https://modelengine.nexent.tech/api/jober
       model.imageExtractor.model: THUDM/GLM-4.1V-9B-Thinking
       model.imageExtractor.url: https://api.siliconflow.cn/v1
       model.audioTranscriptions.model: TeleAI/TeleSpeechASR

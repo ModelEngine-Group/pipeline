@@ -106,7 +106,7 @@ services:
       LOG_NUM: 4320
       LOG_SIZE: "50M"
       app-engine.ttl.businessData: 15
-      app-engine.ttl.nonBusinessData: 1
+      app-engine.ttl.nonBusinessData: 3
       filter.oauth2-filter: enable
       oauth.client.id: app-platform-exp
       oauth.client.secret: 4f8d9b2c7e6a4f1d8c3b2a9e7f6d1c0b
