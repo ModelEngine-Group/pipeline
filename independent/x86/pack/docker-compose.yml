@@ -107,6 +107,7 @@ services:
       LOG_SIZE: "50M"
       app-engine.ttl.businessData: 360
       app-engine.ttl.nonBusinessData: 180
+      task.expiredDays: 180
       filter.oauth2-filter: enable
       oauth.client.id: app-platform
       oauth.client.secret: RPh2J7SkZQ3r8XoUalNEXsdBIMrj7g3dZ8uUL5q3vVA
