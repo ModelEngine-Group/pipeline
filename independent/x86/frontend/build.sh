@@ -25,6 +25,9 @@ cd $workdir
 echo "workdir: " "${workdir}"
 cd $workdir
 
+npm config set strict-ssl false
+npm cache clean -f
+
 # npm install agent-flow
 cd ${appdir}/agent-flow
 npm install --legacy-peer-deps  --registry=https://registry.npmmirror.com
