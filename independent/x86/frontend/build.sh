@@ -25,22 +25,13 @@ cd $workdir
 echo "workdir: " "${workdir}"
 cd $workdir
 
-#npm install elsa-core
-cd ${elsa_core_dir}
-npm config set strict-ssl false
-## 强制清除缓存
-npm cache clean -f
-npm install --legacy-peer-deps --registry=https://registry.npmmirror.com
-npm run build
-npm link
-
-#npm install elsa-react
-cd ${elsa_react_dir}
+# npm install agent-flow
+cd ${appdir}/agent-flow
 npm install --legacy-peer-deps  --registry=https://registry.npmmirror.com
 npm run build
 npm link
 
-#npm install
+# npm install
 cd ${appdir}/frontend
 npm install --legacy-peer-deps --force --registry=https://registry.npmmirror.com
 
