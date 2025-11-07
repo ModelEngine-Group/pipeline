@@ -7,6 +7,7 @@ SQL_DIR=$2
 SCHEMA_SQL_DIR="$SQL_DIR/init/schema"
 DATA_SQL_DIR="$SQL_DIR/init/data"
 UPGRADE_SQL_DIR="$SQL_DIR/upgrade"
+FILTERED_VERSION=$(echo "$PRE_VERSION" | sed 's/v//')
 
 # 尝试连接数据库
 while true
@@ -33,12 +34,21 @@ if [ "$IS_UPGRADE" = "true" ]; then
     if [ ! -z "${UPGRADE_SQL_DIR}" ]; then
         files=$(ls ${UPGRADE_SQL_DIR}/*.sql | sort)
         for sql_file in $files;do
+          # 从文件名中提取版本号
+          SCRIPT_VERSION=$(echo "$sql_file" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+
+          # 比较版本号，只执行比当前版本新的脚本
+          if [ "$(printf '%s\n' "$SCRIPT_VERSION" "$FILTERED_VERSION" | sort -V | tail -n1)" = "$SCRIPT_VERSION" ] && [ "$SCRIPT_VERSION" != "$FILTERED_VERSION" ]; then
             echo "Executing $sql_file..."
+            # 执行sql文件
             psql -h ${DB_HOST} -p ${DB_PORT} -U ${DB_USER} -d ${DB_NAME} -f ${sql_file} -v ON_ERROR_STOP=1
             if [ "$?" -ne 0 ]; then
-                echo "Error: executing $sql_file failed"
-                exit 1
+              echo "Error: executing $sql_file failed"
+              exit 1
             fi
+          else
+            echo "Skipped: $sql_file (sql version: $SCRIPT_VERSION <= pre version: $FILTERED_VERSION)"
+          fi
         done
     fi
     echo "Finished executing upgrade.sql "

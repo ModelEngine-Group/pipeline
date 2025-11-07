@@ -1,13 +1,22 @@
 @echo off
-set "IMAGE_DIR=.\images"
 
-echo === Deploying... ===
-
-for %%i in ("%IMAGE_DIR%\*.tar") do (
-    echo Loading %%~nxi
-    docker load -i "%%i"
+:INPUT_VERSION
+set /p PRE_VERSION=Please enter previous version (for example: v1.2.3):
+if "%PRE_VERSION%"=="" (
+    echo Error: Version cannot be empty. Please try again.
     echo.
+    goto INPUT_VERSION
 )
+
+echo %PRE_VERSION% | findstr "v" >nul
+if errorlevel 1 (
+    echo Error: Version must contain 'v'
+    goto INPUT_VERSION
+) else (
+    echo Version contains 'v'
+)
+
+echo === Upgrading... ===
 
 if not exist "appengine\app-builder" (
     mkdir appengine\app-builder

@@ -1,0 +1,94 @@
+ALTER TABLE "public"."app_builder_app" ADD COLUMN IF NOT EXISTS "user_group_id" varchar(64) DEFAULT '*';
+ALTER TABLE "public"."app_builder_form" ADD COLUMN IF NOT EXISTS "user_group_id" varchar(64) DEFAULT '*';
+ALTER TABLE "public"."store_plugin" ADD COLUMN IF NOT EXISTS "user_group_id" varchar(64) DEFAULT '*';
+ALTER TABLE "public"."store_plugin_tool" ADD COLUMN IF NOT EXISTS "user_group_id" varchar(64) DEFAULT '*';
+ALTER TABLE "public"."store_app" ADD COLUMN IF NOT EXISTS "user_group_id" varchar(64) DEFAULT '*';
+
+UPDATE "public"."app_builder_app" SET "user_group_id" = '001';
+UPDATE "public"."app_builder_form" SET "user_group_id" = '001';
+UPDATE "public"."store_plugin" SET "user_group_id" = '001';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '001';
+UPDATE "public"."store_app" SET "user_group_id" = '001';
+
+UPDATE "public"."app_builder_app" SET "user_group_id" = '*' WHERE "id" = 'cec6bfe7cb3a444f8a26a97ea513e501';
+UPDATE "public"."app_builder_app" SET "user_group_id" = '*' WHERE "id" = 'fd8166b5005e4d66a77d318f3b1dd5e5';
+UPDATE "public"."app_builder_app" SET "user_group_id" = '*' WHERE "id" = 'c419cf9d3f2d472da6b376bbb07c0f5a';
+UPDATE "public"."app_builder_app" SET "user_group_id" = '*' WHERE "id" = '550177e8d0e34014a2d95988ef1c67c5';
+UPDATE "public"."app_builder_app" SET "user_group_id" = '*' WHERE "id" = 'df87073b9bc85a48a9b01eccc9afccc5';
+UPDATE "public"."app_builder_app" SET "user_group_id" = '*' WHERE "id" = 'df87073b9bc85a48a9b01eccc9afccc4';
+UPDATE "public"."app_builder_app" SET "user_group_id" = '*' WHERE "id" = 'df87073b9bc85a48a9b01eccc9afccc3';
+
+UPDATE "public"."app_builder_form" SET "user_group_id" = '*' WHERE "id" = 'b8986770a6ffef44bbf2a9f26d6fc1bc';
+UPDATE "public"."app_builder_form" SET "user_group_id" = '*' WHERE "id" = 'b8986770a6ffef44bbf2a9f26d6fc1be';
+UPDATE "public"."app_builder_form" SET "user_group_id" = '*' WHERE "id" = 'b8986770a6ffef44bbf2a9f26d6fc1bd';
+UPDATE "public"."app_builder_form" SET "user_group_id" = '*' WHERE "id" = 'dc92ba4fb47f4b13b4b8113aa5cfd99c';
+UPDATE "public"."app_builder_form" SET "user_group_id" = '*' WHERE "id" = '3ec9ead2ad5a478e82241af9e521f201';
+UPDATE "public"."app_builder_form" SET "user_group_id" = '*' WHERE "id" = 'a910a3d38a4549eda1112beee008419d';
+UPDATE "public"."app_builder_form" SET "user_group_id" = '*' WHERE "id" = 'd496c444a3174beabbcec5441aed40e2';
+UPDATE "public"."app_builder_form" SET "user_group_id" = '*' WHERE "id" = '115b557320ac41e1b449b8107aaa1781';
+UPDATE "public"."app_builder_form" SET "user_group_id" = '*' WHERE "id" = 'aed5570845d440c78ed3326f8482483c';
+UPDATE "public"."app_builder_form" SET "user_group_id" = '*' WHERE "id" = '1568509614c245a39ce53bda9c3c2ec1';
+
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = 'd44a239ed854ef94af0f032a526907e20ba8a56ebb4f851cc6956c0172a144e7';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = '6789dfcef2355b7b4e76dc53626a98a4b863c3e33c12c43221d03907c025bce0';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = '5525dfcef2355b7b4e76dc53626a98a4b863c3e33c12c43221d03907c025bce0';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = 'a125dfcef2355b7b4e76dc53626a98a4b863c3e33c12c43221d03907c025bce0';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = '08e4eb332c227346b98a37e614577a0b44ff7dbcdc1d79a27b4412def29af226';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = '6d5622e67c96b0fcd0cdccc90b38c31b876e4f1e4d6c6e57dc39de62eebfee17';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = '3a781117bcf93338fcf58e94c40779ea01cf9176973f718224bcaa6e269e3b4b';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = '3b65a7aed166416a9823aac1fe66b2447dd12c9092ca4649b7876b50bd677424';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = 'b125dfcef2355b7b4e76dc53626a98a4b863c3e33c12c43221d03907c025bce0';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = 'e325dfcef2352b7b4e76dc53626a93a4b86323e33c12c43221d03907c025bce0';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = '58e0885b5c2509e83fce7b46ec88689dd3e3decdbf085362e42c93b2126bc390';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = '3b0be5ee63ed30ff58e4760847cada0a6a2a84fbff1ddb73de71fb65a38df32c';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = 'b5ef98e2c8f3966e51eadd47e1dad9bc8b7a96b4ec91208fac65e2c0688564d4';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = 'eb5adfcef2355b7b4e76dc53626a98a4b863c3e33c12c43221d03907c025bce8';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = 'f13a2bd6bdb5afdb2ce166fb2da6c445057b7e092791c743f9b8238dd78a62dd';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = '3733674b4180b02ebb49f60193373d38e08753d890d31d41a1ca880cf4364cdd';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = 'f231f908d0f0959acbc1df7b2f4b8f76b05219e3fa82fcb715def9f8858139e5';
+UPDATE "public"."store_plugin" SET "user_group_id" = '*' WHERE "plugin_id" = '90468c455f728a6082d1b1546547748f3afe55e99d27b5e44acc9bd3935e6f13';
+
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = 'd44a239ed854ef94af0f032a526907e20ba8a56ebb4f851cc6956c0172a144e7';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = '6789dfcef2355b7b4e76dc53626a98a4b863c3e33c12c43221d03907c025bce0';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = '5525dfcef2355b7b4e76dc53626a98a4b863c3e33c12c43221d03907c025bce0';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = 'a125dfcef2355b7b4e76dc53626a98a4b863c3e33c12c43221d03907c025bce0';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = '08e4eb332c227346b98a37e614577a0b44ff7dbcdc1d79a27b4412def29af226';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = '6d5622e67c96b0fcd0cdccc90b38c31b876e4f1e4d6c6e57dc39de62eebfee17';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = '3a781117bcf93338fcf58e94c40779ea01cf9176973f718224bcaa6e269e3b4b';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = '3b65a7aed166416a9823aac1fe66b2447dd12c9092ca4649b7876b50bd677424';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = 'b125dfcef2355b7b4e76dc53626a98a4b863c3e33c12c43221d03907c025bce0';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = 'e325dfcef2352b7b4e76dc53626a93a4b86323e33c12c43221d03907c025bce0';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = '58e0885b5c2509e83fce7b46ec88689dd3e3decdbf085362e42c93b2126bc390';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = '3b0be5ee63ed30ff58e4760847cada0a6a2a84fbff1ddb73de71fb65a38df32c';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = 'b5ef98e2c8f3966e51eadd47e1dad9bc8b7a96b4ec91208fac65e2c0688564d4';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = 'eb5adfcef2355b7b4e76dc53626a98a4b863c3e33c12c43221d03907c025bce8';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = 'f13a2bd6bdb5afdb2ce166fb2da6c445057b7e092791c743f9b8238dd78a62dd';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = '3733674b4180b02ebb49f60193373d38e08753d890d31d41a1ca880cf4364cdd';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = 'f231f908d0f0959acbc1df7b2f4b8f76b05219e3fa82fcb715def9f8858139e5';
+UPDATE "public"."store_plugin_tool" SET "user_group_id" = '*' WHERE "plugin_id" = '90468c455f728a6082d1b1546547748f3afe55e99d27b5e44acc9bd3935e6f13';
+
+UPDATE "public"."store_app" SET "user_group_id" = '*' WHERE "tool_unique_name" = 'e8bbd29c-e529-4c8e-abdb-b355b2d8dcdf';
+UPDATE "public"."store_app" SET "user_group_id" = '*' WHERE "tool_unique_name" = '4ff18263-7cc1-40fc-bd96-4c0ee9eb3af0';
+UPDATE "public"."store_app" SET "user_group_id" = '*' WHERE "tool_unique_name" = '7a76cbd2-881d-469b-b2df-76abed7d0b61';
+UPDATE "public"."store_app" SET "user_group_id" = '*' WHERE "tool_unique_name" = '2a3141b2-8c83-40c2-b2b6-103746c125d3';
+
+UPDATE app_builder_app
+SET create_by = 'system',
+    update_by = 'system'
+WHERE app_suite_id IN (
+                       'ec6f8e93a80541bb930fc22678ef7043',
+                       '5185dad4c8124522a2612c20f8497cf0',
+                       '0b4fe5a430104edfbe0dc6cff0ebea19',
+                       'dfe319109bc84f6793645e3483c029ca'
+    );
+
+ALTER TABLE app_builder_app
+    ALTER COLUMN user_group_id DROP NOT NULL;
+ALTER TABLE app_builder_form
+    ALTER COLUMN user_group_id DROP NOT NULL;
+ALTER TABLE store_plugin
+    ALTER COLUMN user_group_id DROP NOT NULL;
+ALTER TABLE store_plugin_tool
+    ALTER COLUMN user_group_id DROP NOT NULL;
+ALTER TABLE store_app
+    ALTER COLUMN user_group_id DROP NOT NULL;

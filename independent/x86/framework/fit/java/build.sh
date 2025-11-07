@@ -37,7 +37,7 @@ cd "${WORKSPACE}"
 mkdir -p "${WORKSPACE}"/package/sql/init
 mkdir -p "${WORKSPACE}"/package/sql/upgrade
 mv -f ${WORKSPACE}/app-platform/sql/* "${WORKSPACE}"/package/sql/init/
-cp -f ${CURRENT_WORKSPACE}/upgrade.sql "${WORKSPACE}"/package/sql/upgrade/
+cp -f ${CURRENT_WORKSPACE}/sql/upgrade/*.sql "${WORKSPACE}"/package/sql/upgrade/
 
 cd "${CURRENT_BUILD_DIR}"
 mkdir -p icon

@@ -61,6 +61,7 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       IS_UPGRADE: ${IS_UPGRADE}
+      PRE_VERSION: ${PRE_VERSION}
       APIKEY: ${APIKEY}
     volumes:
       - ./appengine/sql:/opt/sql
