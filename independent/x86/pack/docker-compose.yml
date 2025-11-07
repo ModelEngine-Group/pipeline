@@ -112,10 +112,10 @@ services:
       filter.oauth2-filter: enable
       oauth.client.id: app-platform
       oauth.client.secret: RPh2J7SkZQ3r8XoUalNEXsdBIMrj7g3dZ8uUL5q3vVA
-      oauth.client.redirect-uri: https://modelengine.nexent.tech/api/jober/v1/api/auth/callback
+      oauth.client.redirect-uri: https://aido.modelengine-ai.tech/api/jober/v1/api/auth/callback
       oauth.login-endpoint: https://modelengine-ai.net/#/login
       oauth.oauth-endpoint: https://modelengine-ai.net
-      oauth.client-api-endpoint: https://modelengine.nexent.tech/api/jober
+      oauth.client-api-endpoint: https://aido.modelengine-ai.tech/api/jober
       oauth.state-secret: Zf8yPqkN1tVh9uL4aR3sC7xE2jWm0BzQdG5nT6pH8yJrK9wX
       model.imageExtractor.model: THUDM/GLM-4.1V-9B-Thinking
       model.imageExtractor.url: https://api.siliconflow.cn/v1
